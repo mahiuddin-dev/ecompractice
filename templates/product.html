@@ -101,7 +101,7 @@
                         data-zoom-image="{{ product.Images.url }}"
                     /></span>
                   </div>
-
+                  <!-- Product all images -->
                   {% for pimg in product.productimages_set.all %}
                   <div>
                     <span class="prd-img"
@@ -114,7 +114,7 @@
                     /></span>
                   </div>
                 {% endfor %}
-
+                <!-- Product Color Images -->
                 {% for pcolor in product.productcolorimages_set.all %}
                   <div data-value="{{ pcolor.Color_Name }}">
                     <span class="prd-img"
@@ -150,7 +150,7 @@
                     align-items-center
                   "
                 >
-                  <span>Sale</span>
+                  <span> {{ product.Product_label }} </span>
                 </div>
               </div>
               <div class="prd-block_main-image-links">
@@ -483,6 +483,7 @@
                       <button class="increase js-qty-button"></button>
                     </div>
                   </div>
+
                   <div id="add-cart2" class="btn-wrap">
                     <button 
                       id="add-item1"
@@ -512,49 +513,6 @@
                     </button> 
                   </div> 
               {% endif %}
-
-                  <div id="add-cart3" class="prd-block_qty d-none">
-                    <div class="qty qty-changer">
-                      <button class="decrease js-qty-button"></button>
-                      <input
-                        type="number"
-                        class="qty-input"
-                        name="quantity"                         
-                        value="1"
-                        data-min="1"
-                        data-max="1000"
-                        id="quantity2{{product.id}}"
-                      />
-                      <button class="increase js-qty-button"></button>
-                    </div>
-                  </div>
-                  <div id="add-cart4" class="btn-wrap d-none">
-                    <button 
-                      id="add-item2"
-                      class="
-                        btn btn--add-to-cart
-                        js-trigger-addtocart js-prd-addtocart
-                        updated-cart2
-                      "
-                      data-product='{"name":"{{product.Title}}"}'
-                      data-product-id = {{product.id}}
-      
-                      data-action='add'
-                    >
-                      Add to cart
-                    </button> 
-                  </div> 
-
-                  <div id="remove-cart-button"  class="btn-wrap d-none">
-                    <button 
-                    data-product-id = {{product.id}} 
-                    id="remove-item" 
-                    class="btn btn--add-to-cart remove-cart" 
-                    data-action='remove'>
-                      Remove from cart
-                    </button> 
-                  </div> 
-                  
 
                   <div class="btn-wishlist-wrap">
                     <a

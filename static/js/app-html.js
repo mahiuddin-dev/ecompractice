@@ -1,8 +1,4 @@
-/*-----------------------------------------------------------------------------------
- Theme Name: Foxic eCommerce Template
- Author: BigSteps
- Author URI: http://themeforest.net/user/bigsteps
- -----------------------------------------------------------------------------------*/
+
 "use strict";
 
 window.THEME = {};
