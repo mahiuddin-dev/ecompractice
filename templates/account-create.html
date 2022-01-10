@@ -1,0 +1,501 @@
+{% extends 'base.html' %} 
+
+
+{% block css %}
+<style>
+.invalidinfo{
+  border-color: #dc3545 !important;
+  padding-right: calc(1.5em + .75rem) !important;
+}
+
+.validinfo {
+    border-color: #28a745 !important;
+    padding-right: calc(1.5em + .75rem) !important;
+}
+
+.error-message {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+div#updatedMsg {
+  position: relative;
+}
+
+div#updatedMsg a {
+  position: absolute;
+  right: 10px;
+}
+div#updatedMsg a i {
+    color: #fff;
+}
+</style>
+
+{% endblock %}
+  
+
+{% block body %}
+
+<div class="page-content">
+  <div class="holder breadcrumbs-wrap mt-0">
+    <div class="container">
+      <ul class="breadcrumbs">
+        <li><a href="{% url 'Home:Home' %}">Home</a></li>
+        <li><span>Create account</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="holder">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-18 col-lg-12">
+          <h2 class="text-center">Create an Account</h2>
+          <div class="form-wrapper">
+            <p>
+              To access your whishlist, address book and contact preferences and
+              to take advantage of our speedy checkout, create an account with
+              us now.
+            </p>
+			
+            <!-- Error message -->
+
+            {% if msg %}
+            <div id="updatedMsg" class="alert {{color}}">
+                {{ msg }}
+                <a href="#" onclick="closeWin()">
+                  <i class="icon-close-bold"></i>
+                </a>
+            </div>
+       
+            {% endif %}
+
+            {% if messages %}
+              {% for message in messages %}
+              <div id="updatedMsg" class="alert alert-{{message.tags}}">
+                {{ message }}
+                <a href="#" onclick="closeWin()">
+                  <i class="icon-close-bold"></i>
+                </a>
+            </div>
+              {% endfor %}
+          {% endif %}
+            
+
+            <form id="registerform" onsubmit="return registerfunc()"  action="{% url 'Authentication:Registration' %}" method="POST"  >
+			{% csrf_token %}
+              <div class="row">
+                <div class="col-sm-9">
+				
+
+                  <div class="form-group">
+                    <input
+                      onKeyUp="fnamefunc()"
+                      onkeypress="fnamefunc()"
+					            id="fname"
+                      type="text"
+                      class="form-control"
+                      placeholder="First name"
+					            name = "fname"
+                      value = "{{ data.fname }}"
+                      required
+                    />
+                    <div class="error-message"> <span id="fnameError"> </span> </div>
+                  </div>
+                  
+                </div>
+                <div class="col-sm-9">
+                  <div class="form-group">
+                    <input
+                      onKeyUp="lnamefunc()"
+                      onkeypress="lnamefunc()"
+                      type="text"
+                      class="form-control"
+                      placeholder="Last name"
+                      name = "lname"
+                      id="lname"
+                      value = "{{ data.lname }}"
+                      required
+                    />
+                    <div class="error-message"> <span id="lnameError"> </span> </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input  
+                onKeyUp="emailvalidation()"
+                onkeypress="emailvalidation()"
+                type="email" 
+                class="form-control" 
+                placeholder="E-mail" 
+                name = "email" 
+                id="email" 
+                required
+                value = "{{ data.email }}"
+                />
+              <div class="error-message"> <span id="emailError"> </span> </div>
+              <div class="form-group">
+                <input
+                onKeyUp="passwordvalue()"
+                onkeypress="passwordvalue()"
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  name = "password"
+                  id = "password"
+                  minlength="6"
+                  maxlength="32"
+                  required
+          
+           />
+        
+				 <div class="error-message"> <span id="passwordError"> </span> </div>
+
+              <div class="form-group">
+                <input
+                  minlength="6"
+                  maxlength="32"
+                  onKeyUp="passwordvmatch()"
+                  onkeypress="passwordvmatch()"
+                  type="password"
+                  class="form-control"
+                  placeholder="Confirm Password"
+                  name="confirmPassword"
+                  id = "confirmPassword"
+                  required
+                />
+       <div class="error-message"> <span id="passwordConfirmError"> </span> </div>
+        </div>
+              
+        <div class="clearfix">
+                <input
+                  id="checkbox1"
+                  name="checkbox1"
+                  type="checkbox"
+                  checked="checked"
+                  name="checkbox"
+                  required
+                />
+                <label for="checkbox1"
+                  >By registering your details you agree to our
+                  <a
+                    href="#"
+                    class="custom-color"
+                    data-fancybox
+                    data-src="#modalTerms"
+                    >Terms and Conditions</a
+                  >
+                  and
+                  <a
+                    href="#"
+                    class="custom-color"
+                    data-fancybox
+                    data-src="#modalCookies"
+                    >Cookie Policy</a
+                  ></label
+                >
+              </div>
+              <div class="text-center">
+                <button id="registerbtn" type="submit" class="btn">create an account</button>
+              </div>
+            </form>
+    
+          </div>
+        </div>
+        
+      <div class="text-center"><span > or <a href="{% url 'Authentication:loginview' %}"class="custom-color">Click here</a></span> to login </span></div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="modalTerms"
+  style="display: none"
+  class="modal-info-content modal-info-content-lg"
+>
+  <div class="modal-info-heading">
+    <h2>Terms and Conditions</h2>
+  </div>
+  <p>
+    This website is operated by a.season. Throughout the site, the terms “we”,
+    “us” and “our” refer to a.season. a.season offers this website, including
+    all information, tools and services available from this site to you, the
+    user, conditioned upon your acceptance of all terms, conditions, policies
+    and notices stated here.
+  </p>
+  <p>
+    By visiting our site and/ or purchasing something from us, you engage in our
+    “Service” and agree to be bound by the following terms and conditions
+    (“Terms of Service”, “Terms”), including those additional terms and
+    conditions and policies referenced herein and/or available by hyperlink.
+    These Terms of Service apply to all users of the site, including without
+    limitation users who are browsers, vendors, customers, merchants, and/ or
+    contributors of content.
+  </p>
+  <p>
+    Please read these Terms of Service carefully before accessing or using our
+    website. By accessing or using any part of the site, you agree to be bound
+    by these Terms of Service. If you do not agree to all the terms and
+    conditions of this agreement, then you may not access the website or use any
+    services. If these Terms of Service are considered an offer, acceptance is
+    expressly limited to these Terms of Service.
+  </p>
+  <p>
+    Any new features or tools which are added to the current store shall also be
+    subject to the Terms of Service. You can review the most current version of
+    the Terms of Service at any time on this page. We reserve the right to
+    update, change or replace any part of these Terms of Service by posting
+    updates and/or changes to our website. It is your responsibility to check
+    this page periodically for changes. Your continued use of or access to the
+    website following the posting of any changes constitutes acceptance of those
+    changes.
+  </p>
+  <p>
+    Our store is hosted on Shopify Inc. They provide us with the online
+    e-commerce platform that allows us to sell our products and services to you.
+  </p>
+</div>
+
+<div
+  id="modalCookies"
+  style="display: none"
+  class="modal-info-content modal-info-content-lg"
+>
+  <div class="modal-info-heading">
+    <h2>Cookie Policy</h2>
+  </div>
+  <p>
+    This website is operated by a.season. Throughout the site, the terms “we”,
+    “us” and “our” refer to a.season. a.season offers this website, including
+    all information, tools and services available from this site to you, the
+    user, conditioned upon your acceptance of all terms, conditions, policies
+    and notices stated here.
+  </p>
+  <p>
+    By visiting our site and/ or purchasing something from us, you engage in our
+    “Service” and agree to be bound by the following terms and conditions
+    (“Terms of Service”, “Terms”), including those additional terms and
+    conditions and policies referenced herein and/or available by hyperlink.
+    These Terms of Service apply to all users of the site, including without
+    limitation users who are browsers, vendors, customers, merchants, and/ or
+    contributors of content.
+  </p>
+  <p>
+    Please read these Terms of Service carefully before accessing or using our
+    website. By accessing or using any part of the site, you agree to be bound
+    by these Terms of Service. If you do not agree to all the terms and
+    conditions of this agreement, then you may not access the website or use any
+    services. If these Terms of Service are considered an offer, acceptance is
+    expressly limited to these Terms of Service.
+  </p>
+  <p>
+    Any new features or tools which are added to the current store shall also be
+    subject to the Terms of Service. You can review the most current version of
+    the Terms of Service at any time on this page. We reserve the right to
+    update, change or replace any part of these Terms of Service by posting
+    updates and/or changes to our website. It is your responsibility to check
+    this page periodically for changes. Your continued use of or access to the
+    website following the posting of any changes constitutes acceptance of those
+    changes.
+  </p>
+  <p>
+    Our store is hosted on Shopify Inc. They provide us with the online
+    e-commerce platform that allows us to sell our products and services to you.
+  </p>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+
+<script>
+
+  
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+
+ 
+  var fname = document.getElementById('fname'); // Get input div
+  var fnameError = document.getElementById('fnameError') // Get error message div
+  var lname = document.getElementById('lname'); // Get input div
+  var lnameError = document.getElementById('lnameError') // Get error message div
+  var email = document.getElementById("email"); // Get email input 
+  var emailError = document.getElementById("emailError") // get email error div
+  var password = document.getElementById('password'); // Get password input element
+  var errormessage = document.getElementById('passwordError') // Error message for password
+  var confirmPassword = document.getElementById('confirmPassword'); //Get confirm password input element
+  var confirmError = document.getElementById('passwordConfirmError'); // Error message for confirm password
+
+// Validation For Frist name
+  function fnamefunc(){   
+    let nameLength = 15 // Length of name 
+    let fristname = 'frist' // Error message for frist name
+    Registerfunc(fname,fnameError, nameLength,fristname)
+  }
+
+// Validation For last name
+  function lnamefunc(){  
+    let nameLength = 30 // Length of name
+    let lastname = 'last' // Error message for last name
+    Registerfunc(lname,lnameError, nameLength,lastname)
+  }
+
+
+  // Frist name and last name validation function
+  function Registerfunc(name,error,nameLength,inputname){ 
+    var correct_way = /^[A-Za-z\s]+$/;  // Check speacial character
+
+    var fvalue = name.value.trim() // Remove extra space
+    
+    if(fvalue.match(correct_way) && fvalue.length > 0 && fvalue.length <= nameLength){
+      validatefunc(name)
+      error.innerText = "";
+    }else{
+      invalidatefunc(name)
+
+      if(fvalue.length > nameLength){
+        error.innerText = "Your Frist name must be at "+ nameLength+" characters";
+      }else if(fvalue.length == 0){
+        error.innerText = "Please enter your "+ inputname +" name ";
+      }else{
+        error.innerText = "You can only use characters";
+      }
+      
+    }
+  }
+
+
+// Emial validation function
+function emailvalidation(){
+  let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+  if(email.value.match(pattern)){
+    validatefunc(email)
+    emailError.innerText = "";
+  }else{
+    invalidatefunc(email)
+    emailError.innerText = "Please enter a valid email address";
+  }
+
+}
+ 
+// Password validation function
+function passwordvalue(){
+    
+    if( password.value.length > 0 && password.value.length < 6){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'Your password must be 6 digits or longer' 
+      
+    }else if(password.value.length == 0){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'please enter your password'
+
+    }else if(fname.value.toLowerCase() == password.value.toLowerCase()){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'Frist name and password are the same'
+    }else if(lname.value.toLowerCase() == password.value.toLowerCase()){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'Last name and password are the same'
+    } else if(fname.value.toLowerCase()+lname.value.toLowerCase() == password.value.toLowerCase()){ // set error message{
+      invalidatefunc(password)
+      errormessage.innerText = 'Your name and password are the same'
+    }  else{  // validate password
+      validatefunc(password)
+      errormessage.innerText ="";
+    }
+  }
+
+  // Confirm Password Match function
+function passwordvmatch(){
+
+    if(confirmPassword.value.length === 0){ // Set  error message
+      invalidatefunc(confirmPassword)
+      confirmError.innerText = "Please enter your password again."
+    }else if(password.value !== confirmPassword.value){ // password doesn't match set a error message
+      invalidatefunc(confirmPassword)
+      confirmError.innerText = "password don't match"
+    }else if(password.value === confirmPassword.value){ // if password matches
+      confirmError.innerText = ''
+      validatefunc(confirmPassword)
+
+    }
+
+  }
+
+
+  // Onsubmit function
+function registerfunc(){
+      let password = document.forms["registerform"]["password"]; // Get password 
+      let confirmPassword = document.forms["registerform"]["confirmPassword"]; // Get confirm password 
+      var subfname = fname.classList.contains('invalidinfo')
+      var sublname = lname.classList.contains('invalidinfo')
+      var subemail = email.classList.contains('invalidinfo')
+      var subpassword = password.classList.contains('invalidinfo')
+      var subconfirmPassword = confirmPassword.classList.contains('invalidinfo')
+      
+      if(subfname == true || sublname == true || subemail == true || subpassword == true || subconfirmPassword == true){
+        return false;
+
+      }else if(password.value !== confirmPassword.value){ 
+        invalidatefunc(confirmPassword)
+        confirmError.innerText = "password don't match" 
+        return false; // password doesn't match set a error message
+
+      }else if(password.value === confirmPassword.value){ 
+        return true;                    // if password matches
+
+      }
+    }
+ 
+  // Submit function
+document.getElementById('registerbtn').addEventListener('click', function() {
+
+	  if(fname.value.length == 0) {
+      invalidatefunc(fname)
+      fnameError.innerText = "Please enter first name"
+	  }
+	  if(lname.value.length == 0) {
+      invalidatefunc(lname)
+      lnameError.innerText = "Please enter last name"
+	  }
+	  if(email.value.length == 0) {
+      invalidatefunc(email)
+      emailError.innerText = "Please enter a valid email address"
+	  }
+    if(password.value.length == 0){
+      invalidatefunc(password)
+      errormessage.innerText = "Please enter password"
+    }
+    if(confirmPassword.value.length == 0){
+      invalidatefunc(confirmPassword)
+      confirmError.innerText = "Please enter password again"
+    }
+
+
+  })
+
+
+// input validation function
+function validatefunc(name){
+  name.classList.remove('invalidinfo')
+  name.classList.add('validinfo')
+}
+
+// input validation function
+function invalidatefunc(name){
+  name.classList.remove('validinfo')
+  name.classList.add('invalidinfo')
+}
+
+
+function closeWin() {
+  document.getElementById('updatedMsg').setAttribute("style", "display:none");
+}
+
+</script>
+{% endblock %}

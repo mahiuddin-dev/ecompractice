@@ -1,0 +1,483 @@
+{% extends 'base.html' %} 
+
+
+{% block css %}
+<style>
+.invalidinfo{
+  border-color: #dc3545 !important;
+  padding-right: calc(1.5em + .75rem) !important;
+}
+
+.validinfo {
+    border-color: #28a745 !important;
+    padding-right: calc(1.5em + .75rem) !important;
+}
+
+.error-message {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}  
+div#updatedMsg {
+  position: relative;
+}
+
+div#updatedMsg a {
+  position: absolute;
+  right: 10px;
+}
+div#updatedMsg a i {
+    color: #fff;
+}
+</style>
+
+{% endblock %}
+  
+
+
+{% block body %}
+
+<div class="page-content">
+  <div class="holder breadcrumbs-wrap mt-0">
+    <div class="container">
+      <ul class="breadcrumbs">
+        <li><a href="{% url 'Home:Home' %}">Home</a></li>
+        <li><span>My account</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="holder">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 aside aside--left">
+          <div class="list-group">
+            <a href="{% url 'Authentication:Accountview' %}" class="list-group-item active"
+              >Account Details</a
+            >
+            <a href="account-addresses.html" class="list-group-item"
+              >My Addresses</a
+            >
+            <a href="{% url 'Wishlist:Wishlist' %}" class="list-group-item"
+              >My Wishlist</a
+            >
+            <a href="account-history.html" class="list-group-item"
+              >My Order History</a
+            >
+            <a href="#" class="list-group-item disabled">My Reviews</a>
+            <a href="#" class="list-group-item disabled">My Saved Tags</a>
+            <a href="#" class="list-group-item disabled">Compare Products</a>
+          </div>
+        </div>
+        <div class="col-md-14 aside">
+          <h1 class="mb-3">Account Details</h1>
+
+          
+          {% if msg %}
+            <div id="updatedMsg" class="alert {{color}}">
+              {{ msg }}
+              <a href="#" onclick="closeWin()">
+                <i class="icon-close-bold"></i>
+              </a>
+          </div>
+          {% endif %}
+
+          <div class="row vert-margin">
+            <div class="col-sm-9">
+              <div class="card">
+                <div class="card-body">
+                  <h3>Personal Info</h3>
+                  
+                  {% if user.is_authenticated %}
+                  <p>
+                    <b>Name:</b> {{ user.get_full_name }}<br />
+                    <b>E-mail:</b> {{ user.email }}<br />
+                    <b>Password:</b>   ********** 
+                    <a
+                      href="#"
+                      id="editPassword"
+                      class="link-icn js-show-form"
+                      data-form="#updatePassword"
+                      ><i class="icon-pencil"></i>Edit</a
+                    >
+                    <br />
+                  </p>
+                  {% endif %}
+                  <div class="mt-2 clearfix">
+                    <a
+                      href="#"
+                      id="editAccountDetial"
+                      class="link-icn js-show-form"
+                      data-form="#updateDetails"
+                      ><i class="icon-pencil"></i>Edit Profile informatio</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- update user information start -->
+          <div class="card mt-3 d-none" id="updateDetails">
+           
+            {% if user.is_authenticated %}
+            <form id="updateform" onsubmit="return updatefunc()" method="post" action="">
+              {% csrf_token %}
+              <div class="card-body">
+                <h3>Update Account Details</h3>
+                <div class="row mt-2">
+                  <div class="col-sm-9">
+                    <label class="text-uppercase">First Name:</label>
+                    <div class="form-group">
+                      <input
+                        onKeyUp="fnamefunc()"
+                        onkeypress="fnamefunc()"
+                        id="fname"
+                        type="text"
+                        name="fname"
+                        class="form-control form-control--sm"
+                        value="{{ user.first_name }}"
+                        required
+                      />
+                      <div class="error-message"> <span id="fnameError"> </span> </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-9">
+                    <label class="text-uppercase">Last Name:</label>
+                    <div class="form-group">
+                      <input
+                        onKeyUp="lnamefunc()"
+                        onkeypress="lnamefunc()"
+                        type="text"
+                        name="lname"
+                        id="lname"
+                        class="form-control form-control--sm"
+                        value="{{ user.last_name }}"
+                        required
+                      />
+                      <div class="error-message"> <span id="lnameError"> </span> </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-9">
+                    <label class="text-uppercase">E-mail:</label>
+                    <div class="form-group">
+                      <input
+                        onKeyUp="emailvalidation()"
+                        onkeypress="emailvalidation()"
+                        id="email"
+                        type="email"
+                        name="email"
+                        class="form-control form-control--sm"
+                        value="{{ user.email }}"
+                        required
+                      />
+                      <div class="error-message"> <span id="emailError"> </span> </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="mt-2">
+                  <button
+                    type="reset"
+                    class="btn btn--alt js-close-form"
+                    data-form="#updateDetails"
+                  >
+                    Cancel
+                  </button>
+                  <button id="submitUpdate" name="updateDetails" type="submit" class="btn ml-1">Update</button>
+                </div>
+              </div>
+            </form>
+            {% endif %}
+          </div>
+          <!-- update user information end -->
+
+          <!-- update user password start -->
+          <div class="card mt-3 d-none" id="updatePassword">
+            <form onsubmit="return updatepasswordfunc()" method="post" action="">
+              {% csrf_token %}
+              <div class="card-body">
+                <h3>Update Password</h3>
+                <div class="row mt-2">
+                  <div class="col-sm-9">
+                    <label class="text-uppercase">Current Password:</label>
+                    <div class="form-group">
+                      <input
+                        type="password"
+                        name="current_password"
+                        class="form-control form-control--sm"
+                        minlength="6"
+                        maxlength="32"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-sm-9">
+                    <label class="text-uppercase">New Password:</label>
+                    <div class="form-group">
+                      <input
+                        onKeyUp="passwordvalue()"
+                        onkeypress="passwordvalue()"
+                        type="password"
+                        id = "password"
+                        name="new_password"
+                        class="form-control form-control--sm"
+                        minlength="6"
+                        maxlength="32"
+                        required
+                      />
+                      <div class="error-message"> <span id="passwordError"> </span> </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-9">
+                    <label class="text-uppercase">Confirm Password:</label>
+                    <div class="form-group">
+                      <input
+                        onKeyUp="passwordvmatch()"
+                        onkeypress="passwordvmatch()"
+                        type="password"
+                        id = "confirmPassword"
+                        name="confirm_password"
+                        class="form-control form-control--sm"
+                        minlength="6"
+                        maxlength="32"
+                        required
+                      />
+                      <div class="error-message"> <span id="passwordConfirmError"> </span> </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <button
+                    type="reset"
+                    class="btn btn--alt js-close-form"
+                    data-form="#updatePassword"
+                  >
+                    Cancel
+                  </button>
+                  <button id="updatePwd" name="updatePassword" type="submit" class="btn ml-1">Update</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- update user password end -->
+        </div>   
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% if user.is_authenticated %}
+  <input id="first_name" type="hidden" value="{{user.first_name}}">
+  <input id="last_name" type="hidden" value="{{user.last_name}}">
+{% endif %}
+  
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+function closeWin() {
+  document.getElementById('updatedMsg').setAttribute("style", "display:none");
+}
+
+var fname = document.getElementById('fname'); // Get input div
+var fnameError = document.getElementById('fnameError') // Get error message div
+var lname = document.getElementById('lname'); // Get input div
+var lnameError = document.getElementById('lnameError') // Get error message div
+var email = document.getElementById("email"); // Get email input 
+var emailError = document.getElementById("emailError") // get email error div
+var password = document.getElementById('password'); // Get password input element
+var errormessage = document.getElementById('passwordError') // Error message for password
+var confirmPassword = document.getElementById('confirmPassword'); //Get confirm password input element
+var confirmError = document.getElementById('passwordConfirmError'); // Error message for confirm password
+
+var f_name = document.getElementById('first_name').value
+var l_name = document.getElementById('last_name').value
+
+// Validation For Frist name
+  function fnamefunc(){   
+    let nameLength = 15 // Length of name 
+    let fristname = 'frist' // Error message for frist name
+    fnamelnamefunc(fname,fnameError, nameLength,fristname)
+  }
+
+// Validation For last name
+  function lnamefunc(){  
+    let nameLength = 30 // Length of name
+    let lastname = 'last' // Error message for last name
+    fnamelnamefunc(lname,lnameError, nameLength,lastname)
+  }
+
+
+// Frist name and last name validation function
+function fnamelnamefunc(name,error,nameLength,inputname){ 
+    var correct_way = /^[A-Za-z\s]+$/;  // Check speacial character
+    var fvalue = name.value.trim() // Remove extra space
+    if(fvalue.match(correct_way) && fvalue.length > 0 && fvalue.length <= nameLength){
+      validatefunc(name)
+      error.innerText = "";
+    }else{
+      invalidatefunc(name)
+
+      if(fvalue.length > nameLength){
+        error.innerText = "Your Frist name must be at "+ nameLength+" characters";
+      }else if(fvalue.length == 0){
+        error.innerText = "Please enter your "+ inputname +" name ";
+      }else{
+        error.innerText = "You can only use characters";
+      }
+      
+    }
+  }
+
+
+// Emial validation function 
+function emailvalidation(){
+  let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+  if(email.value.match(pattern)){
+    validatefunc(email)
+    emailError.innerText = "";
+  }else{
+    invalidatefunc(email)
+    emailError.innerText = "Please enter a valid email address";
+  }
+
+}
+//  password and confirm password validation function
+ 
+// Password validation function
+document.querySelector("#updatePwd").disabled = true;
+function passwordvalue(){
+    if(password.value.length > 0 && password.value.length < 6){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'Your password must be 6 digits or longer' 
+    }else if(password.value.length == 0){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'please enter your password'
+    }else if(f_name === password.value){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'Frist name and password are the same'
+    }else if(l_name === password.value){ // set error message
+      invalidatefunc(password)
+      errormessage.innerText = 'Last name and password are the same'
+    } else if(f_name+l_name === password.value){ // set error message{
+      invalidatefunc(password)
+      errormessage.innerText = 'Your name and password are the same'
+    }else if(password.value.length > 5){
+      validatefunc(password)
+      errormessage.innerText ="";
+    }else if(password.value === confirmPassword.value) {  // validate password
+      validatefunc(password)
+      validatefunc(confirmPassword)
+      errormessage.innerText ="";
+      confirmError.innerText = ""
+      document.querySelector("#updatePwd").disabled = false;
+    }
+
+    if(password.value !== confirmPassword.value){ // password doesn't match 
+      invalidatefunc(confirmPassword)
+      confirmError.innerText = "password don't match"
+      document.querySelector("#updatePwd").disabled = true;
+    }
+  }
+
+// Confirm Password Match function
+function passwordvmatch(){
+    if(confirmPassword.value.length === 0){ // Set  error message
+      invalidatefunc(confirmPassword)
+      confirmError.innerText = "Please enter your password again."
+      document.querySelector("#updatePwd").disabled = true;
+    }else if(password.value !== confirmPassword.value){ // password doesn't match set a error message
+      invalidatefunc(confirmPassword)
+      confirmError.innerText = "password don't match"
+      document.querySelector("#updatePwd").disabled = true;
+    }else if(password.value === confirmPassword.value){ // if password matches
+      confirmError.innerText = ''
+      validatefunc(confirmPassword)
+      document.querySelector("#updatePwd").disabled = false;
+    }
+
+  }
+
+// Onsubmit function
+function updatefunc(){
+      var subfname = fname.classList.contains('invalidinfo')
+      var sublname = lname.classList.contains('invalidinfo')
+      var subemail = email.classList.contains('invalidinfo')
+      if(subfname == true || sublname == true || subemail == true){
+        return false;
+      }else{
+        return true;
+    }
+}
+ 
+function updatepasswordfunc(){
+  let subpassword = password.classList.contains('invalidinfo')
+  let subconfirmPassword = confirmPassword.classList.contains('invalidinfo')
+
+  if(subpassword == true || subconfirmPassword == true){
+    return false;
+  }else{
+      document.querySelector("#updatePwd").disabled = false;
+      return true;
+  }
+}
+
+// input validation function
+function validatefunc(name){
+  name.classList.remove('invalidinfo')
+  name.classList.add('validinfo')
+}
+
+// input validation function
+function invalidatefunc(name){
+  name.classList.remove('validinfo')
+  name.classList.add('invalidinfo')
+}
+
+
+document.getElementById('editAccountDetial').addEventListener('click', function(){
+  document.getElementById('updatePassword').classList.add('d-none')
+})
+document.getElementById('editPassword').addEventListener('click', function(){
+  document.getElementById('updateDetails').classList.add('d-none')
+})
+
+// function submitDisable(){
+//   const inputs = document.querySelectorAll("#updateform input");
+// for (const el of inputs){
+//   el.oldValue = el.value + el.checked;
+// }
+
+// // Declares function and call it directly
+// var setEnabled;
+// (setEnabled = function() {
+//   var e = true;
+//   for (const el of inputs) {
+//     if (el.oldValue !== (el.value + el.checked)) {
+//       e = false;
+//       break;
+//     }
+//   }
+//   document.querySelector("#submitUpdate").disabled = e;
+// })();
+
+// document.oninput = setEnabled;
+// document.onchange = setEnabled;
+
+// }
+// submitDisable()
+
+</script>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %} 
+
+
+{% block css %}
+
+<style>
+div#updatedMsg {
+  position: relative;
+}
+
+div#updatedMsg a {
+  position: absolute;
+  right: 10px;
+}
+div#updatedMsg a i {
+    color: #fff;
+}
+</style>
+{% endblock %}
+  
+
+{% block body %}
+
+<div class="page-content">
+  <div class="holder breadcrumbs-wrap mt-0">
+    <div class="container">
+      <ul class="breadcrumbs">
+        <li><a href="{% url 'Home:Home' %}">Home</a></li>
+        <li><span>Login Your account</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="holder">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-18 col-lg-12">
+          <h2 class="text-center">Login Your Account</h2>
+          <div class="form-wrapper">
+            <p>
+              To access your whishlist, address book and contact preferences and
+              to take advantage of our speedy checkout, create an account with
+              us now.
+            </p>
+			
+          <!-- Error message -->
+
+          {% if messages %}
+              {% for message in messages %}
+              <div id="updatedMsg" class="alert alert-{{message.tags}}">
+                {{ message }}
+                <a href="#" onclick="closeWin()">
+                  <i class="icon-close-bold"></i>
+                </a>
+            </div>
+              {% endfor %}
+          {% endif %}
+
+            <form method="POST">
+			        {% csrf_token %}
+
+              <div class="form-group">
+                <input 
+                 type="text" 
+                 class="form-control" 
+                 placeholder="E-mail" 
+                 name = "email" 
+                 value="{{ email }}"
+                 required
+                />
+                </div>
+
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  name = "password"
+                  minlength="6"
+                  maxlength="32"
+                  required
+          
+                />
+                </div>
+                
+                <p>Forget your password <a href="{% url 'Authentication:password-reset' %}">Click Here</a> </p>
+        
+              <div class="text-center mt-5">
+                <button type="submit" class="btn">Login</button>
+              </div>
+            </form>
+
+
+          
+        <div class="text-center"><span > or <a href="{% url 'Authentication:Registration' %}"class="custom-color">Click here</a></span> to Register  </span></div>
+
+      </div>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+   if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+  function closeWin() {
+  document.getElementById('updatedMsg').setAttribute("style", "display:none");
+}
+</script>
+
+{% endblock %}
