@@ -22,8 +22,11 @@ class ProductView(HitCountDetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = super().get_object() #? Get current object
-        totalView = product.hit_count.hits_in_last(minutes=60)  #? Count last 1 hour view     
-        
+        totalView = product.hit_count.hits_in_last(minutes=60)  #? Count last 1 hour view    
+
+        # Get similar products
+        similar_products = product.Tags.similar_objects()[:5]
+
         user = self.request.user
         
         if user.is_authenticated:
@@ -39,7 +42,7 @@ class ProductView(HitCountDetailView):
         
         context['total'] = totalView     
         context['cartAdd'] = cartAdd 
-    
+        context['similar_products'] = similar_products 
         return context
     
 

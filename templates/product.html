@@ -898,206 +898,198 @@
         data-slick='{"slidesToShow": 4, "slidesToScroll": 2, "responsive": [{"breakpoint": 992,"settings": {"slidesToShow": 3, "slidesToScroll": 1}},{"breakpoint": 768,"settings": {"slidesToShow": 2, "slidesToScroll": 1}},{"breakpoint": 480,"settings": {"slidesToShow": 2, "slidesToScroll": 1}}]}'
       >
 
-        <div class="prd prd--style2 prd-labels--max prd-labels-shadow">
-          <div class="prd-inside">
-            <div class="prd-img-area">
+      {% for product in similar_products %}    
+     
+      <div class="prd prd--style2 prd-labels--max prd-labels-shadow"> 
+        <div class="prd-inside">
+          <div class="prd-img-area">
+            <a
+              href="{{ product.get_absolute_url }}"
+              class="prd-img image-hover-scale image-container"
+              style="padding-bottom: 128.48%"
+            >
+              <img
+                src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                data-src="{{ product.Images.url }}"
+                alt="Oversized Cotton Blouse"
+                class="js-prd-img lazyload fade-up"
+              />
+              <div class="foxic-loader"></div>
+              <div class="prd-big-squared-labels">
+                <div class="label-new"><span> {{ product.Product_label }} </span></div>
+                {% if product.DiscountPercentage > 0 %}
+                <div class="label-sale">
+                  <span>{{product.DiscountPercentage}}%<span class="sale-text">off</span></span>             
+                  <div class="countdown-circle">
+                    <div
+                    class="countdown js-countdown"
+                    data-countdown="2021/07/01"
+                    ></div>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="prd-circle-labels">
               <a
-                href="product.html"
-                class="prd-img image-hover-scale image-container"
-                style="padding-bottom: 128.48%"
-              >
-                <img
-                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                  data-src="{% static 'images/skins/fashion/products/product-17-1.webp' %}"
-                  alt="Stand Collar Shirt"
-                  class="js-prd-img lazyload fade-up"
-                />
-                <div class="foxic-loader"></div>
-                <div class="prd-big-squared-labels">
-                  <div class="label-sale">
-                    <span>-10% <span class="sale-text">Sale</span></span>
-                    <div class="countdown-circle">
-                      <div
-                        class="countdown js-countdown"
-                        data-countdown="2021/07/01"
-                      ></div>
-                    </div>
-                  </div>
-                </div>
+                href="#"
+                class="
+                  circle-label-compare
+                  circle-label-wishlist--add
+                  js-add-wishlist
+                  mt-0
+                "
+                title="Add To Wishlist"
+                ><i class="icon-heart-stroke"></i></a
+              ><a
+                href=""
+                class="
+                  circle-label-compare
+                  circle-label-wishlist--off
+                  js-remove-wishlist
+                  mt-0
+                "
+                title="Remove From Wishlist"
+                ><i class="icon-heart-hover"></i
+              ></a>
+              <a
+                href="{{ product.get_absolute_url }}"
+                class=" circle-label-qview prd-hide-mobile"
+                ><i class="icon-eye"></i><span>QUICK VIEW</span>
               </a>
-              <div class="prd-circle-labels">
-                <a
-                  href="#"
-                  class="
-                    circle-label-compare
-                    circle-label-wishlist--add
-                    js-add-wishlist
-                    mt-0
-                  "
-                  title="Add To Wishlist"
-                  ><i class="icon-heart-stroke"></i></a
-                ><a
-                  href="#"
-                  class="
-                    circle-label-compare
-                    circle-label-wishlist--off
-                    js-remove-wishlist
-                    mt-0
-                  "
-                  title="Remove From Wishlist"
-                  ><i class="icon-heart-hover"></i
-                ></a>
-                <a
-                  href="#"
-                  class="circle-label-qview js-prd-quickview prd-hide-mobile"
-                  data-src="ajax/ajax-quickview.html"
-                  ><i class="icon-eye"></i><span>QUICK VIEW</span></a
-                >
-              </div>
-              <ul class="list-options color-swatch">
-                <li
-                  data-image="{% static 'images/skins/fashion/products/product-17-1.webp' %}"
-                  class="active"
-                >
-                  <a
-                    href="#"
-                    class="js-color-toggle"
-                    data-toggle="tooltip"
-                    data-placement="right"
-                    title="Color Name"
-                    ><img
-                      src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                      data-src="{% static 'images/skins/fashion/products/product-17-1.webp' %}"
-                      class="lazyload fade-up"
-                      alt="Color Name"
-                  /></a>
-                </li>
-                <li
-                  data-image="{% static 'images/skins/fashion/products/product-17-2.webp' %}"
-                >
-                  <a
-                    href="#"
-                    class="js-color-toggle"
-                    data-toggle="tooltip"
-                    data-placement="right"
-                    title="Color Name"
-                    ><img
-                      src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                      data-src="{% static 'images/skins/fashion/products/product-17-2.webp' %}"
-                      class="lazyload fade-up"
-                      alt="Color Name"
-                  /></a>
-                </li>
-                <li
-                  data-image="{% static 'images/skins/fashion/products/product-17-3.webp' %}"
-                >
-                  <a
-                    href="#"
-                    class="js-color-toggle"
-                    data-toggle="tooltip"
-                    data-placement="right"
-                    title="Color Name"
-                    ><img
-                      src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                      data-src="{% static 'images/skins/fashion/products/product-17-3.webp' %}"
-                      class="lazyload fade-up"
-                      alt="Color Name"
-                  /></a>
-                </li>
-              </ul>
             </div>
-            <div class="prd-info">
-              <div class="prd-info-wrap">
-                <div class="prd-info-top">
-                  <div class="prd-rating">
-                    <i class="icon-star-fill fill"></i
-                    ><i class="icon-star-fill fill"></i
-                    ><i class="icon-star-fill fill"></i
-                    ><i class="icon-star-fill fill"></i
-                    ><i class="icon-star-fill fill"></i>
-                  </div>
+            <ul class="list-options color-swatch">
+
+              <li
+                data-image="{{ product.Images.url }}"
+              >
+                <a
+                  href="#"
+                  class="js-color-toggle"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  ><img
+                    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                    data-src="{{ product.Images.url }}"
+                    class="lazyload fade-up"
+                /></a>
+              </li>
+
+              
+              {% for pcolor in product.productcolorimages_set.all %}
+                
+              <li
+                data-image="{{ pcolor.images.url }}"
+              >
+                <a
+                  href="#"
+                  class="js-color-toggle"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  ><img
+                    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                    data-src="{{ pcolor.images.url }}"
+                    class="lazyload fade-up"
+                /></a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="prd-info">
+            <div class="prd-info-wrap">
+              <div class="prd-info-top">
+                <div class="prd-rating">
+                  <i class="icon-star-fill fill"></i>
+                  <i class="icon-star-fill fill"></i>
+                  <i class="icon-star-fill fill"></i>
+                  <i class="icon-star-fill fill"></i>
+                  <i class="icon-star-fill fill"></i>
                 </div>
-                <div class="prd-rating justify-content-center">
-                  <i class="icon-star-fill fill"></i
-                  ><i class="icon-star-fill fill"></i
-                  ><i class="icon-star-fill fill"></i
-                  ><i class="icon-star-fill fill"></i
-                  ><i class="icon-star-fill fill"></i>
+              </div>
+              <div class="prd-rating justify-content-center">
+                <i class="icon-star-fill fill"></i>
+                <i class="icon-star-fill fill"></i>
+                <i class="icon-star-fill fill"></i>
+                <i class="icon-star-fill fill"></i>
+                <i class="icon-star-fill fill"></i>
+              </div>
+              <div class="prd-tag"><a href="#"> {{ product.Category }} </a></div>
+              <h2 class="prd-title">
+                <a href="{{ product.get_absolute_url }}"> {{ product.Title|slice:50 }} </a>
+              </h2>
+
+              <div class="prd-action">
+                <form action="#">
+                  <button
+                  class="btn js-prd-addtocart"
+                  data-product='{"name": "{{ product.Title }}", "path":"{{ product.Images.url }}", "url":"{{ product.get_absolute_url }}", "aspect_ratio":0.778}' >
+                   Add To Cart
+                  </button>
+                </form>
+              </div>
+
+            </div>
+
+            <div class="prd-hovers">
+              <div class="prd-circle-labels">
+                <div>
+                  <a
+                    href="#"
+                    class="
+                      circle-label-compare
+                      circle-label-wishlist--add
+                      js-add-wishlist
+                      mt-0
+                    "
+                    title="Add To Wishlist"
+                    ><i class="icon-heart-stroke"></i></a
+                  ><a
+                    href="#"
+                    class="
+                      circle-label-compare
+                      circle-label-wishlist--off
+                      js-remove-wishlist
+                      mt-0
+                    "
+                    title="Remove From Wishlist"
+                    ><i class="icon-heart-hover"></i
+                  ></a>
                 </div>
-                <div class="prd-tag"><a href="#">FOXic</a></div>
-                <h2 class="prd-title">
-                  <a href="product.html">Stand Collar Shirt</a>
-                </h2>
-                <div class="prd-description">
-                  Quisque volutpat condimentum velit. Class aptent taciti
-                  sociosqu ad litora torquent per conubia nostra, per inceptos
-                  himenaeos. Nam nec ante sed lacinia.
+                <div class="prd-hide-mobile">
+                  <a
+                    href="{{ product.get_absolute_url }}"
+                    class="circle-label-qview js-prd-quickview"
+                    data-src=""
+                    ><i class="icon-eye"></i><span>QUICK VIEW</span></a
+                  >
                 </div>
-                <div class="prd-action">
-                  <form action="#">
-                    <button
-                      class="btn js-prd-addtocart"
-                      data-product='{"name": "Stand Collar Shirt", "path":"images/skins/fashion/products/product-17-1.webp", "url":"product.html", "aspect_ratio":0.778}'
-                    >
-                      Add To Cart
+              </div>
+              <div class="prd-price">
+
+                {% if product.DiscountPercentage > 0 %}
+                <div class="price-old">$ {{ product.Price }} </div>
+                {% endif %}
+
+                <div class="price-new">$ {{ product.Price|finalprice:product.DiscountPercentage }} </div> 
+            
+              </div>
+              <div class="prd-action">
+                <div class="prd-action-left">
+                    <a href="{{ product.get_absolute_url }}">
+                    <button class="btn" >
+                      View Details
                     </button>
-                  </form>
-                </div>
-              </div>
-              <div class="prd-hovers">
-                <div class="prd-circle-labels">
-                  <div>
-                    <a
-                      href="#"
-                      class="
-                        circle-label-compare
-                        circle-label-wishlist--add
-                        js-add-wishlist
-                        mt-0
-                      "
-                      title="Add To Wishlist"
-                      ><i class="icon-heart-stroke"></i></a
-                    ><a
-                      href="#"
-                      class="
-                        circle-label-compare
-                        circle-label-wishlist--off
-                        js-remove-wishlist
-                        mt-0
-                      "
-                      title="Remove From Wishlist"
-                      ><i class="icon-heart-hover"></i
-                    ></a>
-                  </div>
-                  <div class="prd-hide-mobile">
-                    <a
-                      href="#"
-                      class="circle-label-qview js-prd-quickview"
-                      data-src="ajax/ajax-quickview.html"
-                      ><i class="icon-eye"></i><span>QUICK VIEW</span></a
-                    >
+                   </a>
+                  
                   </div>
                 </div>
-                <div class="prd-price">
-                  <div class="price-old">$ 200</div>
-                  <div class="price-new">$ 180</div>
-                </div>
-                <div class="prd-action">
-                  <div class="prd-action-left">
-                    <form action="#">
-                      <button
-                        class="btn js-prd-addtocart"
-                        data-product='{"name": "Stand Collar Shirt", "path":"images/skins/fashion/products/product-17-1.webp", "url":"product.html", "aspect_ratio":0.778}'
-                      >
-                        Add To Cart
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
+      </div> 
+      
+
+  {% endfor %}
 
       </div>
     </div>
